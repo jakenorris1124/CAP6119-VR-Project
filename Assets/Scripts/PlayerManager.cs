@@ -15,6 +15,8 @@ using InputDevice = UnityEngine.XR.InputDevice;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputAA;
+    [SerializeField] private GameObject XROrigin;
+    
     private InputActionMap leftHandInteractionMap;
     private InputAction leftTrigger;
 
@@ -95,6 +97,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         Vector3 direction = (end - start);
+        direction = XROrigin.transform.rotation * direction;
         direction.Normalize();
         
         gravityManager.ChangeGravity(direction);
