@@ -10,6 +10,11 @@ using UnityEngine.InputSystem;
 public class GravityManager : MonoBehaviour
 {
     [SerializeField] private GameObject XROrigin;
+    
+    /// <summary>
+    /// Time it takes to rotate the player once gravity is changed in seconds.
+    /// </summary>
+    [SerializeField] private float rotationTime = 1f;
 
     private Vector3[] cardinals = new Vector3[]
     {
@@ -64,9 +69,9 @@ public class GravityManager : MonoBehaviour
         Vector3 up = XROrigin.transform.up;
         Vector3 inverted = new Vector3(direction.x * -1, direction.y * -1, direction.z * -1);
 
-        for (float rotate = 0.01f; rotate <= 1f; rotate += 0.01f)
+        for (var elapsedTime = 0f; elapsedTime <= rotationTime; elapsedTime += Time.deltaTime)
         {
-            XROrigin.transform.up = Vector3.Slerp(up, inverted, rotate);
+            XROrigin.transform.up = Vector3.Slerp(up, inverted, elapsedTime);
             yield return null;
         }
     }
