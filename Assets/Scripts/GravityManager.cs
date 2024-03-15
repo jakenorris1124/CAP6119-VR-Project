@@ -15,16 +15,6 @@ public class GravityManager : MonoBehaviour
     /// Time it takes to rotate the player once gravity is changed in seconds.
     /// </summary>
     [SerializeField] private float rotationTime = 1f;
-
-    private Vector3[] cardinals = new Vector3[]
-    {
-        Vector3.up,
-        Vector3.down,
-        Vector3.left,
-        Vector3.right,
-        Vector3.forward, 
-        Vector3.back
-    };
     
     public void ChangeGravity(Vector3 direction, bool clamp = true)
     {
