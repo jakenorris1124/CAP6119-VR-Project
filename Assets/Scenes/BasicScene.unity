@@ -439,6 +439,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Complete XR Origin Set Up
       objectReference: {fileID: 0}
+    - target: {fileID: 7696548424635294048, guid: 895f6f3c2d334633b5800312285058d2, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7873184977108000993, guid: 895f6f3c2d334633b5800312285058d2, type: 3}
       propertyPath: m_RequestedTrackingOriginMode
       value: 0
@@ -1588,6 +1592,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1845885044
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.44405
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983007235692795296, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9157003048599495563, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
+      propertyPath: m_Name
+      value: Light Bridge
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 27dd2d0051b9d454ea6117348181c9f6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1603,3 +1668,4 @@ SceneRoots:
   - {fileID: 1602426957}
   - {fileID: 826166162}
   - {fileID: 1032941237}
+  - {fileID: 1845885044}
