@@ -32,8 +32,6 @@ public class GravityManager : MonoBehaviour
         _rigidbody = XROrigin.GetComponent<Rigidbody>();
         _playerSafetyManager = XROrigin.GetComponent<SafeZone>();
         _currentAxis = Axis.Y;
-
-        _rigidbody.constraints = ConstrainedAxis();
     }
 
     public void ChangeGravity(Vector3 direction, bool clamp = true)
@@ -42,7 +40,6 @@ public class GravityManager : MonoBehaviour
             direction = Clamp(direction);
         
         Physics.gravity = direction;
-        UpdateCurrentAxis(direction);
         
         StartCoroutine(RotatePlayer(direction));
     }
@@ -75,24 +72,11 @@ public class GravityManager : MonoBehaviour
     {
         return value > 0 ? 1 : -1;
     }
-
-    private void UpdateCurrentAxis(Vector3 direction)
-    {
-        if (direction.x != 0)
-            _currentAxis = Axis.X;
-        else if (direction.y != 0)
-            _currentAxis = Axis.Y;
-        else
-            _currentAxis = Axis.Z;
-    }
-
+    
     private IEnumerator RotatePlayer(Vector3 direction)
     {
         Vector3 up = XROrigin.transform.up;
         Vector3 inverted = direction * -1;
-
-        // Unlock rigidbody rotation
-        _rigidbody.constraints = RigidbodyConstraints.None;
         
         for (var elapsedTime = 0f; elapsedTime <= rotationTime; elapsedTime += Time.deltaTime)
         {
@@ -100,18 +84,9 @@ public class GravityManager : MonoBehaviour
             yield return null;
         }
         
-        // Lock rigidbody rotation
+        // Update rigidbody tensor
         _rigidbody.inertiaTensorRotation = XROrigin.transform.rotation;
-        _rigidbody.constraints = ConstrainedAxis();
         
         _playerSafetyManager.TrySafetyFix();
     }
-
-    private RigidbodyConstraints ConstrainedAxis() => _currentAxis switch
-    {
-        Axis.X => RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ,
-        Axis.Y => RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ,
-        Axis.Z => RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY,
-        _ => throw new ArgumentOutOfRangeException(nameof(_currentAxis), _currentAxis, null)
-    };
 }
