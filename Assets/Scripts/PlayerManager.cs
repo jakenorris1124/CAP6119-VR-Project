@@ -46,7 +46,9 @@ public class PlayerManager : MonoBehaviour
         devices = new List<InputDevice>();
         
         _bodyCenter = XROrigin.gameObject.transform.Find("Body Center");
-        _levelGeometry = LayerMask.GetMask("Level Geometry");
+        
+        string[] layers = { "Level Geometry", "Light Bridge" };
+        _levelGeometry = LayerMask.GetMask(layers);
     }
 
     /// <summary>
