@@ -59,11 +59,11 @@ public class GravityManager : MonoBehaviour
         Vector3 strict = direction.Abs();
 
         if (strict.x > strict.y && strict.x > strict.z)
-            return new Vector3(1 * GetSign(direction.x), 0, 0);
+            return new Vector3(9.81f * GetSign(direction.x), 0, 0);
         if (strict.y > strict.x && strict.y > strict.z)
-            return new Vector3(0, 1 * GetSign(direction.y), 0);
+            return new Vector3(0, 9.81f * GetSign(direction.y), 0);
         
-        return new Vector3(0, 0, 1 * GetSign(direction.z));
+        return new Vector3(0, 0, 9.81f * GetSign(direction.z));
     }
 
     /// <summary>
