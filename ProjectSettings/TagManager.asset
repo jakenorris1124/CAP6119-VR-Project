@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Anchor
+  - Friend Cube
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - UI
   - Physics Object
   - Light Bridge
-  - 
+  - Big Button
   - 
   - 
   - 
