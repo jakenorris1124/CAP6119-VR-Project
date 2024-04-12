@@ -34,14 +34,16 @@ public class GravityManager : MonoBehaviour
         _currentAxis = Axis.Y;
     }
 
-    public void ChangeGravity(Vector3 direction, bool clamp = true)
+    public void ChangeGravity(Vector3 direction, bool clamp = true, bool rotatePlayer = true)
     {
         if (clamp)
             direction = Clamp(direction);
         
         Physics.gravity = direction;
-        
-        StartCoroutine(RotatePlayer(direction));
+        _rigidbody.velocity = Vector3.zero;
+
+        if (rotatePlayer)
+            StartCoroutine(RotatePlayer(direction));
     }
 
     /// <summary>

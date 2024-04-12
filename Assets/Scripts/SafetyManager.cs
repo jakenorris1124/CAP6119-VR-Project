@@ -14,6 +14,7 @@ public class SafetyManager : MonoBehaviour
     private Queue<FauxTransform> _safeSpots;
     private float _accumulatedTime = 0f;
     private bool _hyperLocationSave = false;
+    private GravityManager _gravityManager;
     
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,8 @@ public class SafetyManager : MonoBehaviour
         _solidGround = LayerMask.GetMask(layers);
         
         _safeSpots = new Queue<FauxTransform>();
+
+        _gravityManager = GameObject.Find("Gravity Manager").GetComponent<GravityManager>();
     }
 
     /// <summary>
@@ -137,8 +140,14 @@ public class SafetyManager : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (LayerMask.LayerToName(other.gameObject.layer) == "Out of Bounds")
-            CopyTransform(_safeSpots.Peek());
+            ReturnToSafety();
             
+    }
+
+    public void ReturnToSafety()
+    {
+        CopyTransform(_safeSpots.Peek());
+        _gravityManager.ChangeGravity(transform.up * -1, rotatePlayer: false);
     }
     
     // Adapted from https://gamedev.stackexchange.com/questions/204851/copying-transforms-from-one-object-to-another
