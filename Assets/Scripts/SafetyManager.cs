@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 
@@ -7,8 +9,11 @@ public class SafetyManager : MonoBehaviour
 {
     private Transform _bodyCenter;
     [SerializeField] private float radius = 0.8f;
+    private LayerMask _solidGround;
     
-    private LayerMask _levelGeometry;
+    private Queue<FauxTransform> _safeSpots;
+    private float _accumulatedTime = 0f;
+    private bool _hyperLocationSave = false;
     
     // Start is called before the first frame update
     void Start()
@@ -16,7 +21,9 @@ public class SafetyManager : MonoBehaviour
         _bodyCenter = gameObject.transform.Find("Body Center");
         
         string[] layers = { "Level Geometry", "Light Bridge" };
-        _levelGeometry = LayerMask.GetMask(layers);
+        _solidGround = LayerMask.GetMask(layers);
+        
+        _safeSpots = new Queue<FauxTransform>();
     }
 
     /// <summary>
@@ -58,7 +65,27 @@ public class SafetyManager : MonoBehaviour
         
         return safe;
     }
-    
+
+    private void Update()
+    {
+        if (_hyperLocationSave) 
+            return;
+        
+        _accumulatedTime += Time.deltaTime;
+            
+        if (_accumulatedTime >= 1f)
+        {
+            try
+            {
+                SaveLocation();
+            }
+            catch (CantSaveLocationException e)
+            {
+                StartCoroutine(HyperSaveLocation());
+            }
+        }
+    }
+
     /// <summary>
     /// Checks if the player is currently on the ground with a little leniency (i.e, being slightly off the ground
     /// still counts as being grounded).
@@ -67,6 +94,92 @@ public class SafetyManager : MonoBehaviour
     public bool IsGrounded()
     {
         Transform bodyCenterTransform = _bodyCenter.transform;
-        return Physics.Raycast(bodyCenterTransform.position, bodyCenterTransform.up * -1, 1f, _levelGeometry);
+        return Physics.Raycast(bodyCenterTransform.position, bodyCenterTransform.up * -1, 1f, _solidGround);
+    }
+
+    /// <summary>
+    /// Saves the players location. Throws a CantSaveLocationException if the location cannot be saved.
+    /// </summary>
+    private void SaveLocation()
+    {
+        if (IsGrounded())
+        {
+            _safeSpots.Enqueue(new FauxTransform(gameObject.transform.position, gameObject.transform.rotation));
+            _accumulatedTime = 0f;
+
+            if (_safeSpots.Count >= 5)
+            {
+                _safeSpots.Dequeue();
+            }
+        }
+        else
+            throw new CantSaveLocationException();
+    }
+
+    private IEnumerator HyperSaveLocation()
+    {
+        _hyperLocationSave = true;
+
+        while (true)
+        {
+            try
+            {
+                SaveLocation();
+                _hyperLocationSave = false;
+                yield break;
+            }
+            catch (CantSaveLocationException e) { }
+            
+            yield return null;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (LayerMask.LayerToName(other.gameObject.layer) == "Out of Bounds")
+            CopyTransform(_safeSpots.Peek());
+            
+    }
+    
+    // Adapted from https://gamedev.stackexchange.com/questions/204851/copying-transforms-from-one-object-to-another
+    private void CopyTransform(FauxTransform source)
+    {
+        source.GetPositionAndRotation(out Vector3 pos, out Quaternion rot);
+        gameObject.transform.SetPositionAndRotation(pos, rot);
+    }
+
+    private class FauxTransform
+    {
+        private Vector3 _position;
+        private Quaternion _rotation;
+        
+        public FauxTransform(Vector3 pos, Quaternion rot)
+        {
+            _position = pos;
+            _rotation = rot;
+        }
+
+        public void GetPositionAndRotation(out Vector3 pos, out Quaternion rot)
+        {
+            pos = _position;
+            rot = _rotation;
+        }
+    }
+
+    private class CantSaveLocationException : Exception
+    {
+        public CantSaveLocationException()
+        {
+        }
+
+        public CantSaveLocationException(string message) : base(message)
+        {
+        }
+
+        public CantSaveLocationException(string message, Exception inner) : base(message, inner)
+        {
+        }
     }
 }
+
+
