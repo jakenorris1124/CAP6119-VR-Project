@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputAA;
     [SerializeField] private GameObject XROrigin;
+    private Rigidbody _rigidbody;
     
     private InputActionMap leftHandInteractionMap;
     private InputAction leftTrigger;
@@ -25,8 +26,6 @@ public class PlayerManager : MonoBehaviour
 
     private GravityManager gravityManager;
     private SafetyManager _safetyManager;
-    
-    public bool IsPressed = false; // used to display button state in the Unity Inspector window
     
     
     // Start is called before the first frame update
@@ -44,6 +43,7 @@ public class PlayerManager : MonoBehaviour
         devices = new List<InputDevice>();
         
         _safetyManager = XROrigin.GetComponent<SafetyManager>();
+        _rigidbody = XROrigin.GetComponent<Rigidbody>();
     }
 
     /// <summary>
@@ -105,6 +105,28 @@ public class PlayerManager : MonoBehaviour
         
         gravityManager.ChangeGravity(direction);
     }
+
+    private bool PrimaryButtonPress()
+    {
+        bool primaryButtonDown = false;
+        
+        foreach (InputDevice device in devices)
+        {
+            device.TryGetFeatureValue(CommonUsages.primaryButton, out  primaryButtonDown);
+            if (primaryButtonDown)
+                break;
+        }
+
+        return primaryButtonDown;
+    }
+
+    private void Jump()
+    {
+        if (_safetyManager.IsGrounded())
+        {
+            _rigidbody.AddForce(XROrigin.transform.up * 10);
+        }
+    }
     
 
     // Update is called once per frame
@@ -119,6 +141,9 @@ public class PlayerManager : MonoBehaviour
         {
             StartCoroutine(ApplyGravityVector());
         }
+
+        if (PrimaryButtonPress())
+            Jump();
     }
 }
 

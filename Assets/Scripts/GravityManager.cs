@@ -82,13 +82,11 @@ public class GravityManager : MonoBehaviour
         
         for (var elapsedTime = 0f; elapsedTime <= rotationTime; elapsedTime += Time.deltaTime)
         {
-            XROrigin.transform.up = Vector3.Slerp(up, inverted, elapsedTime);
+            XROrigin.transform.up = Vector3.Slerp(up, inverted, elapsedTime / rotationTime);
             yield return null;
         }
         
         // Update rigidbody tensor
         _rigidbody.inertiaTensorRotation = XROrigin.transform.rotation;
-        
-        _playerSafetyManager.TrySafetyFix();
     }
 }

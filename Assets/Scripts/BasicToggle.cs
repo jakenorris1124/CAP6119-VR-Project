@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicToggle : MonoBehaviour
 {
-    private bool state = true;
+    [SerializeField] private bool state = true;
     
     public void Toggle()
     {
