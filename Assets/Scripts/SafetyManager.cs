@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 
-public class SafeZone : MonoBehaviour
+public class SafetyManager : MonoBehaviour
 {
     private Transform _bodyCenter;
     [SerializeField] private float radius = 0.8f;
+    
+    private LayerMask _levelGeometry;
     
     // Start is called before the first frame update
     void Start()
     {
         _bodyCenter = gameObject.transform.Find("Body Center");
+        
+        string[] layers = { "Level Geometry", "Light Bridge" };
+        _levelGeometry = LayerMask.GetMask(layers);
     }
 
     /// <summary>
@@ -52,5 +57,16 @@ public class SafeZone : MonoBehaviour
         }
         
         return safe;
+    }
+    
+    /// <summary>
+    /// Checks if the player is currently on the ground with a little leniency (i.e, being slightly off the ground
+    /// still counts as being grounded).
+    /// </summary>
+    /// <returns>True if the player is on the ground, false if they are not.</returns>
+    public bool IsGrounded()
+    {
+        Transform bodyCenterTransform = _bodyCenter.transform;
+        return Physics.Raycast(bodyCenterTransform.position, bodyCenterTransform.up * -1, 1f, _levelGeometry);
     }
 }

@@ -12,7 +12,7 @@ public class GravityManager : MonoBehaviour
 {
     [SerializeField] private GameObject XROrigin;
     private Rigidbody _rigidbody;
-    private SafeZone _playerSafetyManager;
+    private SafetyManager _playerSafetyManager;
     
     enum Axis
     {
@@ -30,7 +30,7 @@ public class GravityManager : MonoBehaviour
     private void Start()
     {
         _rigidbody = XROrigin.GetComponent<Rigidbody>();
-        _playerSafetyManager = XROrigin.GetComponent<SafeZone>();
+        _playerSafetyManager = XROrigin.GetComponent<SafetyManager>();
         _currentAxis = Axis.Y;
     }
 

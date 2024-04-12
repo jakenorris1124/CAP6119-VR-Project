@@ -17,9 +17,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private InputActionAsset inputAA;
     [SerializeField] private GameObject XROrigin;
     
-    private Transform _bodyCenter;
-    private LayerMask _levelGeometry;
-    
     private InputActionMap leftHandInteractionMap;
     private InputAction leftTrigger;
 
@@ -27,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     public List<InputDevice> devices;
 
     private GravityManager gravityManager;
+    private SafetyManager _safetyManager;
     
     public bool IsPressed = false; // used to display button state in the Unity Inspector window
     
@@ -45,10 +43,7 @@ public class PlayerManager : MonoBehaviour
         gravityManager = GameObject.Find("Gravity Manager").GetComponent<GravityManager>();
         devices = new List<InputDevice>();
         
-        _bodyCenter = XROrigin.gameObject.transform.Find("Body Center");
-        
-        string[] layers = { "Level Geometry", "Light Bridge" };
-        _levelGeometry = LayerMask.GetMask(layers);
+        _safetyManager = XROrigin.GetComponent<SafetyManager>();
     }
 
     /// <summary>
@@ -110,17 +105,7 @@ public class PlayerManager : MonoBehaviour
         
         gravityManager.ChangeGravity(direction);
     }
-
-    /// <summary>
-    /// Checks if the player is currently on the ground with a little leniency (i.e, being slightly off the ground
-    /// still counts as being grounded).
-    /// </summary>
-    /// <returns>True if the player is on the ground, false if they are not.</returns>
-    private bool IsGrounded()
-    {
-        Transform bodyCenterTransform = _bodyCenter.transform;
-        return Physics.Raycast(bodyCenterTransform.position, bodyCenterTransform.up * -1, 1f, _levelGeometry);
-    }
+    
 
     // Update is called once per frame
     void Update()
@@ -130,7 +115,7 @@ public class PlayerManager : MonoBehaviour
             InitializeInputDevices();
         }
         
-        if (leftTrigger.WasPressedThisFrame() && IsGrounded())
+        if (leftTrigger.WasPressedThisFrame() && _safetyManager.IsGrounded())
         {
             StartCoroutine(ApplyGravityVector());
         }
