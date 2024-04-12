@@ -141,7 +141,12 @@ public class SafetyManager : MonoBehaviour
     {
         if (LayerMask.LayerToName(other.gameObject.layer) == "Out of Bounds")
             ReturnToSafety();
-            
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Tainted"))
+            ReturnToSafety();
     }
 
     public void ReturnToSafety()
