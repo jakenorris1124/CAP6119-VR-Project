@@ -15,18 +15,18 @@ public class BridgeToggle : MonoBehaviour
         state = !state;
 
         if (state)
-            TurnedOnHandler();
+            On();
         else
-            TurnedOffHandler();
+            Off();
     }
     
-    private void TurnedOffHandler()
+    public void Off()
     {
         off.Play();
         gameObject.SetActive(false);
     }
 
-    private void TurnedOnHandler()
+    public void On()
     {
         gameObject.SetActive(true);
         on.Play();

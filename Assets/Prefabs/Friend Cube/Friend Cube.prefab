@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6532025681044493461}
   - component: {fileID: 8409973499521902317}
   - component: {fileID: 7523764478858977290}
+  - component: {fileID: 6210472927824391963}
   m_Layer: 6
   m_Name: Friend Cube
   m_TagString: Friend Cube
@@ -286,3 +287,15 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+--- !u!114 &6210472927824391963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3459654896556275660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8d288debf0f164e9aba9582a790bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

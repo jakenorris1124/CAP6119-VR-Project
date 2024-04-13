@@ -15,6 +15,7 @@ public class DoorManager : MonoBehaviour
     private Transform _rightClosed;
 
     [SerializeField] private float time = 1f;
+    [SerializeField] private bool startOpen = false;
     
     private bool _state;
     private bool _transitioning = false;
@@ -26,6 +27,12 @@ public class DoorManager : MonoBehaviour
         
         _rightOpen = gameObject.transform.Find("Right_Open");
         _rightClosed = gameObject.transform.Find("Right_Closed");
+
+        if (startOpen)
+        {
+            left.transform.position = _leftOpen.position;
+            right.transform.position = _rightOpen.position;
+        }
     }
 
     public void Toggle()
@@ -44,7 +51,7 @@ public class DoorManager : MonoBehaviour
         }
     }
 
-    private void Open(bool useCurrTransform)
+    public void Open(bool useCurrTransform)
     {
         Transform _leftStart =  useCurrTransform ? left.transform : _leftClosed;
         Transform _rightStart = useCurrTransform ? right.transform : _rightClosed;
@@ -52,8 +59,8 @@ public class DoorManager : MonoBehaviour
         StartCoroutine(SlideDoor(left, _leftStart, _leftOpen));
         StartCoroutine(SlideDoor(right, _rightStart, _rightOpen));
     }
-
-    private void Close(bool useCurrTransform)
+    
+    public void Close(bool useCurrTransform)
     {
         Transform _leftStart = useCurrTransform ? left.transform : _leftOpen;
         Transform _rightStart = useCurrTransform ? right.transform : _rightOpen;

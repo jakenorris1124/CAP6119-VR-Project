@@ -97,7 +97,8 @@ public class SafetyManager : MonoBehaviour
     public bool IsGrounded()
     {
         Transform bodyCenterTransform = _bodyCenter.transform;
-        return Physics.Raycast(bodyCenterTransform.position, bodyCenterTransform.up * -1, 1f, _solidGround);
+        bool grounded = Physics.Raycast(bodyCenterTransform.position, bodyCenterTransform.up * -1, out RaycastHit hit, 1f, _solidGround);
+        return grounded && !hit.collider.CompareTag("Tainted");
     }
 
     /// <summary>
@@ -145,7 +146,7 @@ public class SafetyManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Tainted"))
+        if (other.gameObject.CompareTag("Tainted") && IsGrounded())
             ReturnToSafety();
     }
 
