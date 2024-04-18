@@ -6538,8 +6538,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This button only works if there is a lot of weight on it. Try putting the
-    cube on it!
+  m_text: This button only works if there is a lot of weight pressing DOWN on it.
+    Additionally, the glowing dot shows what the button will open!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6566,8 +6566,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -12673,7 +12673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.45116997
+      value: 0.471
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12685,15 +12685,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -12701,7 +12701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 450040, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -12766,6 +12766,14 @@ PrefabInstance:
     - target: {fileID: 4138299211075031650, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
       propertyPath: buttonUnpressed.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625043280871542223, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ab5337ee2db70b24d9c952a80ff5bfb3, type: 2}
+    - target: {fileID: 8655528184064305749, guid: 67269437c0000f048abf52a0eb56fe4b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21298,6 +21306,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2326728, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: ab5337ee2db70b24d9c952a80ff5bfb3, type: 2}
+    - target: {fileID: 2327944, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: ab5337ee2db70b24d9c952a80ff5bfb3, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
