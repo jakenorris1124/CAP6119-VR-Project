@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 public class GravityManager : MonoBehaviour
 {
     [SerializeField] private GameObject XROrigin;
+    private GameObject _cam;
     private Rigidbody _rigidbody;
     private SafetyManager _playerSafetyManager;
     
@@ -27,19 +28,23 @@ public class GravityManager : MonoBehaviour
     /// </summary>
     [SerializeField] private float rotationTime = 1f;
 
+    [SerializeField] private float speed = 80f;
+
     private void Start()
     {
         _rigidbody = XROrigin.GetComponent<Rigidbody>();
         _playerSafetyManager = XROrigin.GetComponent<SafetyManager>();
         _currentAxis = Axis.Y;
+        _cam = XROrigin.transform.Find("Camera Offset").transform.Find("Main Camera").gameObject;
     }
+    
 
     public void ChangeGravity(Vector3 direction, bool clamp = true, bool rotatePlayer = true)
     {
         if (clamp)
             direction = Clamp(direction);
         
-        Physics.gravity = direction;
+        Physics.gravity = Gravitize(direction);;
         _rigidbody.velocity = Vector3.zero;
 
         if (rotatePlayer)
@@ -58,12 +63,38 @@ public class GravityManager : MonoBehaviour
         Vector3 strict = direction.Abs();
 
         if (strict.x > strict.y && strict.x > strict.z)
-            return new Vector3(9.81f * GetSign(direction.x), 0, 0);
+            return new Vector3(1 * GetSign(direction.x), 0, 0);
         if (strict.y > strict.x && strict.y > strict.z)
-            return new Vector3(0, 9.81f * GetSign(direction.y), 0);
+            return new Vector3(0, 1 * GetSign(direction.y), 0);
         
-        return new Vector3(0, 0, 9.81f * GetSign(direction.z));
+        return new Vector3(0, 0, 1 * GetSign(direction.z));
     }
+
+    private static Vector3 Gravitize(Vector3 direction)
+    {
+        return direction * 9.81f;
+    }
+    
+    
+    private Vector3 GetNewForward(Vector3 direction)
+    {
+        Vector3 up = XROrigin.transform.up;
+        Vector3 forward = XROrigin.transform.forward;
+
+        Vector3 critical = Vector3.Cross(up, Clamp(XROrigin.transform.right));
+        float angle = Vector3.Angle(forward, critical);
+        
+        Vector3 newForward = Vector3.Cross(up, direction * -1);
+        
+        if (newForward == Vector3.zero)
+        {
+            return forward * -1;
+        }
+        
+        newForward = Quaternion.AngleAxis(angle * -1, direction * -1) * newForward;
+        return newForward;
+    }
+    
 
     /// <summary>
     /// Gets the sign of <paramref name="value"/>
@@ -75,14 +106,19 @@ public class GravityManager : MonoBehaviour
         return value > 0 ? 1 : -1;
     }
     
+    
     private IEnumerator RotatePlayer(Vector3 direction)
     {
         Vector3 up = XROrigin.transform.up;
         Vector3 inverted = direction * -1;
+
+        Quaternion currRotation = XROrigin.transform.rotation;
+        Quaternion newRotation = Quaternion.LookRotation(GetNewForward(direction), inverted);
+        
         
         for (var elapsedTime = 0f; elapsedTime <= rotationTime; elapsedTime += Time.deltaTime)
         {
-            XROrigin.transform.up = Vector3.Slerp(up, inverted, elapsedTime / rotationTime);
+            XROrigin.transform.rotation = Quaternion.Slerp(currRotation, newRotation, elapsedTime / rotationTime);
             yield return null;
         }
         
