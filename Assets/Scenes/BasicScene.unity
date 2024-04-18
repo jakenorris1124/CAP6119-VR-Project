@@ -1185,6 +1185,30 @@ PrefabInstance:
       propertyPath: debugBall
       value: 
       objectReference: {fileID: 5874608788751713168, guid: cba54893a6545b54d9d0582145056d4b, type: 3}
+    - target: {fileID: 3449930025827621864, guid: 8f9785b1e2fb001468098f158af7204e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9257088
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449930025827621864, guid: 8f9785b1e2fb001468098f158af7204e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449930025827621864, guid: 8f9785b1e2fb001468098f158af7204e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.37823716
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449930025827621864, guid: 8f9785b1e2fb001468098f158af7204e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449930025827621864, guid: 8f9785b1e2fb001468098f158af7204e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449930025827621864, guid: 8f9785b1e2fb001468098f158af7204e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 44.449
+      objectReference: {fileID: 0}
     - target: {fileID: 5608725064559293426, guid: 8f9785b1e2fb001468098f158af7204e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.053183
@@ -1778,9 +1802,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6508511578610486727, guid: 8e4ec9973ef072645ab49b80c7867401, type: 3}
+      propertyPath: speed
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 6508511578610486727, guid: 8e4ec9973ef072645ab49b80c7867401, type: 3}
       propertyPath: XROrigin
       value: 
       objectReference: {fileID: 1251000338}
+    - target: {fileID: 6508511578610486727, guid: 8e4ec9973ef072645ab49b80c7867401, type: 3}
+      propertyPath: rotationTime
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
