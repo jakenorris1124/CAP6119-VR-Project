@@ -30,7 +30,7 @@ public class PlayerManager : MonoBehaviour
     
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Setup input action asset and get related components
         inputAA.Enable();

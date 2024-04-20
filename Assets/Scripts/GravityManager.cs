@@ -30,12 +30,13 @@ public class GravityManager : MonoBehaviour
 
     [SerializeField] private float speed = 80f;
 
-    private void Start()
+    private void Awake()
     {
         _rigidbody = XROrigin.GetComponent<Rigidbody>();
         _playerSafetyManager = XROrigin.GetComponent<SafetyManager>();
         _currentAxis = Axis.Y;
         _cam = XROrigin.transform.Find("Camera Offset").transform.Find("Main Camera").gameObject;
+        Physics.gravity = Vector3.down;
     }
     
 
