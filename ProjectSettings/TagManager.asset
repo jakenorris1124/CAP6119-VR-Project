@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Anchor
+  - Friend Cube
+  - Tainted
   layers:
   - Default
   - TransparentFX
@@ -14,9 +16,9 @@ TagManager:
   - UI
   - Physics Object
   - Light Bridge
-  - 
-  - 
-  - 
+  - Big Button
+  - Out of Bounds
+  - Tainted
   - 
   - 
   - 

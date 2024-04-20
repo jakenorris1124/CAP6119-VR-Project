@@ -16,23 +16,21 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputAA;
     [SerializeField] private GameObject XROrigin;
-    
-    private Transform _bodyCenter;
-    private LayerMask _levelGeometry;
+    private Rigidbody _rigidbody;
     
     private InputActionMap leftHandInteractionMap;
     private InputAction leftTrigger;
 
     public InputDevice leftController;
+    public InputDevice rightController;
     public List<InputDevice> devices;
 
     private GravityManager gravityManager;
-    
-    public bool IsPressed = false; // used to display button state in the Unity Inspector window
+    private SafetyManager _safetyManager;
     
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Setup input action asset and get related components
         inputAA.Enable();
@@ -40,15 +38,13 @@ public class PlayerManager : MonoBehaviour
         leftTrigger = leftHandInteractionMap.FindAction("Activate");
         
         // Initialize input devices
+        devices = new List<InputDevice>();
         InitializeInputDevices();
 
         gravityManager = GameObject.Find("Gravity Manager").GetComponent<GravityManager>();
-        devices = new List<InputDevice>();
         
-        _bodyCenter = XROrigin.gameObject.transform.Find("Body Center");
-        
-        string[] layers = { "Level Geometry", "Light Bridge" };
-        _levelGeometry = LayerMask.GetMask(layers);
+        _safetyManager = XROrigin.GetComponent<SafetyManager>();
+        _rigidbody = XROrigin.GetComponent<Rigidbody>();
     }
 
     /// <summary>
@@ -59,9 +55,16 @@ public class PlayerManager : MonoBehaviour
     /// </remarks>
     private void InitializeInputDevices()
     {
+        leftController = new InputDevice();
         if (!leftController.isValid)
         {
             InitializeInputDevice(InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.Left, ref leftController);
+        }
+
+        rightController = new InputDevice();
+        if (!rightController.isValid)
+        {
+            InitializeInputDevice(InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.Right, ref rightController);
         }
     }
 
@@ -111,16 +114,28 @@ public class PlayerManager : MonoBehaviour
         gravityManager.ChangeGravity(direction);
     }
 
-    /// <summary>
-    /// Checks if the player is currently on the ground with a little leniency (i.e, being slightly off the ground
-    /// still counts as being grounded).
-    /// </summary>
-    /// <returns>True if the player is on the ground, false if they are not.</returns>
-    private bool IsGrounded()
+    private bool PrimaryButtonPress()
     {
-        Transform bodyCenterTransform = _bodyCenter.transform;
-        return Physics.Raycast(bodyCenterTransform.position, bodyCenterTransform.up * -1, 1f, _levelGeometry);
+        bool primaryButtonDown = false;
+        
+        foreach (InputDevice device in devices)
+        {
+            device.TryGetFeatureValue(CommonUsages.primaryButton, out  primaryButtonDown);
+            if (primaryButtonDown)
+                break;
+        }
+
+        return primaryButtonDown;
     }
+
+    private void Jump()
+    {
+        if (_safetyManager.IsGrounded())
+        {
+            _rigidbody.AddForce(XROrigin.transform.up * 10);
+        }
+    }
+    
 
     // Update is called once per frame
     void Update()
@@ -130,10 +145,13 @@ public class PlayerManager : MonoBehaviour
             InitializeInputDevices();
         }
         
-        if (leftTrigger.WasPressedThisFrame() && IsGrounded())
+        if (leftTrigger.WasPressedThisFrame() && _safetyManager.IsGrounded())
         {
             StartCoroutine(ApplyGravityVector());
         }
+
+        if (PrimaryButtonPress())
+            Jump();
     }
 }
 
