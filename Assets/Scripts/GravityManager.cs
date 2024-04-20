@@ -1,12 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Authentication.ExtendedProtection;
-using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GravityManager : MonoBehaviour
 {
