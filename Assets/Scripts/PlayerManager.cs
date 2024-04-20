@@ -27,6 +27,8 @@ public class PlayerManager : MonoBehaviour
 
     private GravityManager gravityManager;
     private SafetyManager _safetyManager;
+
+    private bool holding;
     
     
     // Start is called before the first frame update
@@ -45,6 +47,8 @@ public class PlayerManager : MonoBehaviour
         
         _safetyManager = XROrigin.GetComponent<SafetyManager>();
         _rigidbody = XROrigin.GetComponent<Rigidbody>();
+
+        holding = false;
     }
 
     /// <summary>
@@ -128,6 +132,32 @@ public class PlayerManager : MonoBehaviour
         return primaryButtonDown;
     }
 
+    private bool BothSecondaryPress()
+    {
+        leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool leftSecondaryButton);
+        rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool rightSecondaryButton);
+
+        return leftSecondaryButton && rightSecondaryButton;
+    }
+
+    private IEnumerator HoldBothSecondary()
+    {
+        holding = true;
+
+        float time = 0f;
+        while (BothSecondaryPress())
+        {
+            time += Time.deltaTime;
+            if (time >= 2f)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            yield return null;
+        }
+
+        holding = false;
+    }
+
     private void Jump()
     {
         if (_safetyManager.IsGrounded())
@@ -152,6 +182,11 @@ public class PlayerManager : MonoBehaviour
 
         if (PrimaryButtonPress())
             Jump();
+
+        if (!holding && BothSecondaryPress())
+        {
+            StartCoroutine(HoldBothSecondary());
+        }
     }
 }
 
