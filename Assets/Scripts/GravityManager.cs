@@ -36,7 +36,7 @@ public class GravityManager : MonoBehaviour
         _playerSafetyManager = XROrigin.GetComponent<SafetyManager>();
         _currentAxis = Axis.Y;
         _cam = XROrigin.transform.Find("Camera Offset").transform.Find("Main Camera").gameObject;
-        Physics.gravity = Vector3.down;
+        Physics.gravity = Vector3.down * 9.81f;
     }
     
 
