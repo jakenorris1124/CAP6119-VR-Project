@@ -3927,7 +3927,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: f9d304861f975bb4f9043557f36edfc5, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 176500, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
+    - {fileID: 112040, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
+    - {fileID: 197710, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 499886, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
       insertIndex: 1
@@ -13233,19 +13236,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: f9d304861f975bb4f9043557f36edfc5, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 103490, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
+    - {fileID: 185194, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
+    - {fileID: 184240, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 499886, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
-      insertIndex: 1
+      insertIndex: -1
       addedObject: {fileID: 222227468}
     - targetCorrespondingSourceObject: {fileID: 499886, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
-      insertIndex: 2
+      insertIndex: -1
       addedObject: {fileID: 129808500}
     - targetCorrespondingSourceObject: {fileID: 499886, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
-      insertIndex: 3
+      insertIndex: -1
       addedObject: {fileID: 785956867}
     - targetCorrespondingSourceObject: {fileID: 499886, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
-      insertIndex: 4
+      insertIndex: -1
       addedObject: {fileID: 1367620566}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 114044, guid: 8db5b99e1590340a4a7166fa4c9f9cf2, type: 3}
