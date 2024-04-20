@@ -22,6 +22,7 @@ public class PlayerManager : MonoBehaviour
     private InputAction leftTrigger;
 
     public InputDevice leftController;
+    public InputDevice rightController;
     public List<InputDevice> devices;
 
     private GravityManager gravityManager;
@@ -37,10 +38,10 @@ public class PlayerManager : MonoBehaviour
         leftTrigger = leftHandInteractionMap.FindAction("Activate");
         
         // Initialize input devices
+        devices = new List<InputDevice>();
         InitializeInputDevices();
 
         gravityManager = GameObject.Find("Gravity Manager").GetComponent<GravityManager>();
-        devices = new List<InputDevice>();
         
         _safetyManager = XROrigin.GetComponent<SafetyManager>();
         _rigidbody = XROrigin.GetComponent<Rigidbody>();
@@ -54,9 +55,16 @@ public class PlayerManager : MonoBehaviour
     /// </remarks>
     private void InitializeInputDevices()
     {
+        leftController = new InputDevice();
         if (!leftController.isValid)
         {
             InitializeInputDevice(InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.Left, ref leftController);
+        }
+
+        rightController = new InputDevice();
+        if (!rightController.isValid)
+        {
+            InitializeInputDevice(InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.Right, ref rightController);
         }
     }
 
