@@ -75,7 +75,7 @@ public class GravityManager : MonoBehaviour
     private Vector3 GetNewForward(Vector3 direction)
     {
         Vector3 up = XROrigin.transform.up;
-        Vector3 forward = XROrigin.transform.forward;
+        Vector3 forward = Vector3.ProjectOnPlane(_cam.transform.forward, up);
 
         Vector3 critical = Vector3.Cross(up, Clamp(XROrigin.transform.right));
         float angle = Vector3.Angle(forward, critical);
