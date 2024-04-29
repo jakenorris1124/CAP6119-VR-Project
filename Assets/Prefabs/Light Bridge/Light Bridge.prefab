@@ -275,6 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: {fileID: 4114957853566120726}
   off: {fileID: 1100813589805503702}
+  startDisabled: 0
 --- !u!82 &4114957853566120726
 AudioSource:
   m_ObjectHideFlags: 0
@@ -331,7 +332,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -427,7 +428,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
