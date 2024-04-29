@@ -180,6 +180,15 @@ public class PlayerManager : MonoBehaviour
             yield return null;
         }
 
+        if (time < 0.5f)
+        {
+            int buildIndex = SceneManager.GetActiveScene().buildIndex;
+            if (buildIndex + 2 < SceneManager.sceneCountInBuildSettings)
+            {
+                SceneManager.LoadScene(buildIndex + 2);
+            }
+        }
+
         holding = false;
     }
 
