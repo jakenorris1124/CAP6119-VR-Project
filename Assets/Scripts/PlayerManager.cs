@@ -21,6 +21,9 @@ public class PlayerManager : MonoBehaviour
     
     private InputActionMap leftHandInteractionMap;
     private InputAction leftTrigger;
+    
+    private InputActionMap rightHandInteractionMap;
+    private InputAction rightTrigger;
 
     private InputActionMap leftHandLocoMap;
     private InputAction leftStick;
@@ -33,6 +36,7 @@ public class PlayerManager : MonoBehaviour
     private SafetyManager _safetyManager;
 
     private bool holding;
+    private bool _drawing;
     
     
     // Start is called before the first frame update
@@ -44,6 +48,9 @@ public class PlayerManager : MonoBehaviour
         leftTrigger = leftHandInteractionMap.FindAction("Activate");
         leftHandLocoMap = inputAA.FindActionMap("XRI LeftHand Locomotion");
         leftStick = leftHandLocoMap.FindAction("Move");
+        
+        rightHandInteractionMap = inputAA.FindActionMap("XRI RightHand Interaction");
+        rightTrigger = rightHandInteractionMap.FindAction("Activate");
         
         // Initialize input devices
         devices = new List<InputDevice>();
@@ -101,19 +108,29 @@ public class PlayerManager : MonoBehaviour
 
     private IEnumerator ApplyGravityVector()
     {
-        if (!leftController.isValid)
+        if (_drawing)
+        {
+            yield break;
+        }
+
+        _drawing = true;
+
+        InputDevice controller = leftTrigger.WasPressedThisFrame() ? leftController : rightController;
+        InputAction trigger = leftTrigger.WasPressedThisFrame() ? leftTrigger : rightTrigger;
+        
+        if (!controller.isValid)
         {
             throw new Exception("Invalid device");
         }
         
-        if (!leftController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 start))
+        if (!controller.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 start))
         {
             throw new Exception("Can't get device position");
         }
 
-        yield return new WaitUntil(() => !leftTrigger.IsPressed());
+        yield return new WaitUntil(() => !trigger.IsPressed());
         
-        if (!leftController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 end))
+        if (!controller.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 end))
         {
             throw new Exception("Can't get device position");
         }
@@ -123,6 +140,7 @@ public class PlayerManager : MonoBehaviour
         direction.Normalize();
         
         gravityManager.ChangeGravity(direction);
+        _drawing = false;
     }
 
     private bool PrimaryButtonPress()
@@ -193,12 +211,12 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!leftController.isValid)
+        if (!leftController.isValid || !rightController.isValid)
         {
             InitializeInputDevices();
         }
         
-        if (leftTrigger.WasPressedThisFrame() && _safetyManager.IsGrounded())
+        if ((leftTrigger.WasPressedThisFrame() || rightTrigger.WasPressedThisFrame()) && _safetyManager.IsGrounded())
         {
             StartCoroutine(ApplyGravityVector());
         }
