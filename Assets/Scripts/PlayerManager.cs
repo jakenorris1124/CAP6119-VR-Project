@@ -17,9 +17,13 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private InputActionAsset inputAA;
     [SerializeField] private GameObject XROrigin;
     private Rigidbody _rigidbody;
+    private Camera _camera;
     
     private InputActionMap leftHandInteractionMap;
     private InputAction leftTrigger;
+
+    private InputActionMap leftHandLocoMap;
+    private InputAction leftStick;
 
     public InputDevice leftController;
     public InputDevice rightController;
@@ -27,6 +31,8 @@ public class PlayerManager : MonoBehaviour
 
     private GravityManager gravityManager;
     private SafetyManager _safetyManager;
+
+    private bool holding;
     
     
     // Start is called before the first frame update
@@ -36,6 +42,8 @@ public class PlayerManager : MonoBehaviour
         inputAA.Enable();
         leftHandInteractionMap = inputAA.FindActionMap("XRI LeftHand Interaction");
         leftTrigger = leftHandInteractionMap.FindAction("Activate");
+        leftHandLocoMap = inputAA.FindActionMap("XRI LeftHand Locomotion");
+        leftStick = leftHandLocoMap.FindAction("Move");
         
         // Initialize input devices
         devices = new List<InputDevice>();
@@ -45,6 +53,9 @@ public class PlayerManager : MonoBehaviour
         
         _safetyManager = XROrigin.GetComponent<SafetyManager>();
         _rigidbody = XROrigin.GetComponent<Rigidbody>();
+        _camera = XROrigin.transform.Find("Camera Offset").GetChild(0).GetComponent<Camera>();
+
+        holding = false;
     }
 
     /// <summary>
@@ -128,12 +139,54 @@ public class PlayerManager : MonoBehaviour
         return primaryButtonDown;
     }
 
+    private bool BothSecondaryPress()
+    {
+        leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool leftSecondaryButton);
+        rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool rightSecondaryButton);
+
+        return leftSecondaryButton && rightSecondaryButton;
+    }
+
+    private IEnumerator HoldBothSecondary()
+    {
+        holding = true;
+
+        float time = 0f;
+        while (BothSecondaryPress())
+        {
+            time += Time.deltaTime;
+            if (time >= 2f)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            yield return null;
+        }
+
+        holding = false;
+    }
+
     private void Jump()
     {
         if (_safetyManager.IsGrounded())
         {
             _rigidbody.AddForce(XROrigin.transform.up * 10);
         }
+    }
+
+    private void Move(Vector2 input)
+    {
+        if (input == Vector2.zero)
+            return;
+
+        float angle = Vector2.SignedAngle(Vector2.up, input) * -1;
+        
+        Vector3 up = Physics.gravity * -1;
+        Vector3 camForward = Vector3.ProjectOnPlane(_camera.transform.forward, up);
+
+        Vector3 movement = Quaternion.AngleAxis(angle, up) * camForward * input.magnitude;
+        
+        
+        XROrigin.transform.Translate(movement * (Time.deltaTime * 3), relativeTo: Space.World);
     }
     
 
@@ -149,9 +202,16 @@ public class PlayerManager : MonoBehaviour
         {
             StartCoroutine(ApplyGravityVector());
         }
+        
+        Move(leftStick.ReadValue<Vector2>());
 
         if (PrimaryButtonPress())
             Jump();
+
+        if (!holding && BothSecondaryPress())
+        {
+            StartCoroutine(HoldBothSecondary());
+        }
     }
 }
 
